@@ -38,6 +38,7 @@ myShip.gfx.y = display.contentCenterY
 local fireButton = display.newRect(0, 0, 100, 100)
 fireButton.x = stage.contentWidth - fireButton.width
 fireButton.y = stage.contentHeight - fireButton.height
+fireButton.alpha = 0.6
 
 local function fire()
     
@@ -84,7 +85,14 @@ function updateListener( _event )
     myShip:update()
     
     for i, bullet in ipairs(bullets) do 
+        -- move the buyllet position
         bullet:update()
+        
+        -- destroy bullets if they are off screen
+        if ( bullet.gfx.x > display.contentWidth or bullet.gfx.y < 0 or bullet.gfx.y > display.contentHeight ) then
+            bullet = nil
+            table.remove( bullets, i )
+        end
     end
 end
 

@@ -46,11 +46,6 @@ function Bullet:addEventListener( ... )
 end
 
 function Bullet:update()
-    
-    print(self.dX)
-    print(self.dY)
-    print("----------")
-    
     self.gfx.x = self.gfx.x + self.dX
     self.gfx.y = self.gfx.y + self.dY
 end
