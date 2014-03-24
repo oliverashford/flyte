@@ -41,7 +41,7 @@ fireButton.y = stage.contentHeight - fireButton.height
 
 local function fire()
     
-    local tempBullet = Bullet:new( myShip.gfx.x, myShip.gfx.x, 0 )
+    local tempBullet = Bullet:new( myShip.gfx.x, myShip.gfx.y, myShip:getAngle() )
     
     table.insert(bullets, tempBullet)
     

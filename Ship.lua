@@ -16,7 +16,8 @@ function Ship:new ( ... )
     object = {
         eventObject = eventObject,
         gfx = gfx,
-        speed = 5
+        speed = 5,
+        angle = 0
     }
 
     setmetatable( object, self )
@@ -49,10 +50,14 @@ function Ship:setSpeed( _speed )
 end
 
 function Ship:setAngle( _angle )
-    _angle = _angle - display.contentCenterY
-    _angle = MAX_ANGLE * _angle / display.contentCenterY
+    self.angle = _angle - display.contentCenterY
+    self.angle = MAX_ANGLE * self.angle / display.contentCenterY
     
-    self.gfx.rotation = _angle
+    self.gfx.rotation = self.angle 
+end
+
+function Ship:getAngle( _angle )
+    return self.angle
 end
 
 function Ship:update()
