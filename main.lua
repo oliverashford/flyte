@@ -23,6 +23,10 @@ local myGroundController = GroundController:new()
 local BulletController = require( "BulletController" )
 local myBulletController = BulletController:new()
 
+-- add the asteroid bg
+local AsteroidController = require( "AsteroidController" )
+local myAsteroidController = AsteroidController:new()
+
 -- add the ship
 local Ship = require( "Ship" )
 local myShip = Ship:new()
@@ -68,6 +72,8 @@ function myEnterFrameListener( _event )
     
     myBulletController:update()
     
+    myAsteroidController:update()
+    
     
     --[[
     local bullets = myBulletController:getBullets()
@@ -90,7 +96,28 @@ function myEnterFrameListener( _event )
         end
     end
     ]]--
+    
+    -- test for ship ground collision
+    for j, groundScreen in ipairs( myGroundController:getGroundScreens() ) do
+        
+        if hasCollidedBoundingBox( groundScreen.gfx, myShip.gfx ) then
+            print( "Ship collided with ground" )
+        end
+        
+    end
+    
+    
 end
+
+-- launch an asteroid
+local function myAsteroidListener( _event )
+    
+    local tempRadius = math.random( 20, 30 )
+    
+    myAsteroidController:spawn( display.contentWidth + tempRadius, 100, tempRadius)
+end
+
+timer.performWithDelay( 5000, myAsteroidListener, 0 )
 
 fireButton:addEventListener( "touch", myFireButtonListener )
 
@@ -98,28 +125,20 @@ stage:addEventListener( "touch", myStageTouchListener )
 
 Runtime:addEventListener( "enterFrame", myEnterFrameListener )
 
-function hasCollidedBoundingBox( _obj1, _obj2 )
-        
-    if _obj1 == nil then
-        print( "hasCollided, _obj1 = nil")
-        return false
-    end
-    
-    if _obj2 == nil then	
-        print( "hasCollided, _obj2 = nil")
-        return false	
-    end
-    
-    local collision = false
-    
-    if ( _obj1.contentBounds.xMin <= _obj2.contentBounds.xMin and _obj1.contentBounds.xMax >= _obj2.contentBounds.xMin ) or
-        ( _obj1.contentBounds.xMin >= _obj2.contentBounds.xMin and _obj1.contentBounds.xMin <= _obj2.contentBounds.xMax ) or
-        ( _obj1.contentBounds.yMin <= _obj2.contentBounds.yMin and _obj1.contentBounds.yMax >= _obj2.contentBounds.yMin ) or
-        ( _obj1.contentBounds.yMin >= _obj2.contentBounds.yMin and _obj1.contentBounds.yMin <= _obj2.contentBounds.yMax ) then	
-        collision = true
-    end
-    
-    return collision
+function hasCollidedBoundingBox( obj1, obj2 )
+   if ( obj1 == nil ) then  --make sure the first object exists
+      return false
+   end
+   if ( obj2 == nil ) then  --make sure the other object exists
+      return false
+   end
+
+   local left = obj1.contentBounds.xMin <= obj2.contentBounds.xMin and obj1.contentBounds.xMax >= obj2.contentBounds.xMin
+   local right = obj1.contentBounds.xMin >= obj2.contentBounds.xMin and obj1.contentBounds.xMin <= obj2.contentBounds.xMax
+   local up = obj1.contentBounds.yMin <= obj2.contentBounds.yMin and obj1.contentBounds.yMax >= obj2.contentBounds.yMin
+   local down = obj1.contentBounds.yMin >= obj2.contentBounds.yMin and obj1.contentBounds.yMin <= obj2.contentBounds.yMax
+
+   return (left or right) and (up or down)
 end
 
 --[[
