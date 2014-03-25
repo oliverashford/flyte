@@ -1,9 +1,9 @@
 local GroundScreen = {}   
 
 local MIN_HEIGHT = 10
-local MAX_HEIGHT = 100
-local MIN_VERTEX = 0
-local MAX_VERTEX = 5
+local MAX_HEIGHT = 50
+local MIN_VERTEX = 3
+local MAX_VERTEX = 10
 
 -------------------------------------------------
 -- CONSTRUCTOR
@@ -43,18 +43,34 @@ function GroundScreen:addEventListener( ... )
 end
 
 function GroundScreen:buildGround( _startHeight )
+    
+    -- how many extra vertices?
+    local extraVertices = math.random( MIN_VERTEX, MAX_VERTEX)
+    
+    print( "_startHeight: " .. _startHeight)
+    print( "extraVertices: " .. extraVertices)
+    print( "---------------------")
+    
+    -- calculate the separation of each new vertex
+    local xSeparation = display.contentWidth  / extraVertices
+
     -- create table and add start point top left
     local vertices = {}
     self:addXY( vertices, 0, display.contentHeight - _startHeight)
     
+    -- run through and create each new vertex
+    for i=1, extraVertices - 1 do
+        
+        local newX = i * xSeparation
+        
+        local newY = display.contentHeight - math.random( MIN_HEIGHT, MAX_HEIGHT ) 
+        
+        self:addXY( vertices,  newX, newY)
+        
+    end
     
-    -- add terrain vertices
-    self:addXY( vertices, display.contentWidth / 3, display.contentHeight - 40)
-    self:addXY( vertices, display.contentWidth / 2, display.contentHeight - 25)
+    -- add top right final
     self:addXY( vertices, display.contentWidth, display.contentHeight - _startHeight)
-    
-    
-
     
     -- add bottom right and bottom left vertices
     self:addXY( vertices, display.contentWidth, display.contentHeight)
@@ -63,18 +79,20 @@ function GroundScreen:buildGround( _startHeight )
     local myPoly = display.newPolygon( 0, 0, vertices)
     myPoly.y = display.contentHeight - myPoly.height
     
-    -- create boundin box
+    -- create boundin box for debugging
+    --[[
     local myRect = display.newRect( myPoly.contentBounds.xMin, myPoly.contentBounds.yMin, myPoly.contentBounds.xMax, myPoly.contentBounds.yMax )
     myRect.strokeWidth = 1
     myRect:setFillColor( 0, 0, 0,0 )
     myRect:setStrokeColor( 1, 0, 0, 1 )
+    ]]--
     
     local myGroup = display.newGroup()
     
     myGroup:insert(myPoly)
-    myGroup:insert(myRect)
+   -- myGroup:insert(myRect)
     
-    return myGroup
+    return myGroup, endHeight
 end
 
 function GroundScreen:addXY( _table, _x, _y )

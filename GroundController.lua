@@ -20,7 +20,8 @@ function GroundController:new ( ... )
 
     object = {
         eventObject = eventObject,
-        groundScreens = groundScreens
+        groundScreens = groundScreens,
+        startHeight = 10
     }
 
     setmetatable( object, self )
@@ -75,7 +76,7 @@ function GroundController:addNewGround()
     -- create the GroundSCreen
     local GroundScreen = require( "GroundScreen" )
     
-    local tempGroundScreen = GroundScreen:new( 10, display.contentWidth )
+    local tempGroundScreen = GroundScreen:new( self.startHeight, display.contentWidth )
     
     -- add into table
     table.insert( self.groundScreens, tempGroundScreen )    
