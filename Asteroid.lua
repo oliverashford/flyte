@@ -41,4 +41,12 @@ function Asteroid:update()
     self.gfx.x = self.gfx.x - self.speed
 end
 
+function Asteroid:destroyed()
+    local event = {
+        name = "DESTROYED", 
+        target = self 
+    }
+    self:dispatchEvent( event )
+end
+
 return Asteroid

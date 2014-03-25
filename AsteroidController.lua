@@ -53,11 +53,26 @@ function AsteroidController:update()
     end
 end
 
+function AsteroidController:getAsteroids()
+    return self.asteroids
+end
+
 function AsteroidController:spawn( _x, _y, _radius )
     print( "Spawning Asteroid" )
     
     local tempAsteroid = Asteroid:new( _x, _y, _radius )
+    
+    tempAsteroid:addEventListener( 'DESTROYED', self.destroyed )
+    
     table.insert( self.asteroids, tempAsteroid )
+end
+
+function AsteroidController:destroyed( _event )
+    
+    print( "AsteroidController:destroyed( _event )" )
+    
+    print( _event )
+    
 end
 
 return AsteroidController

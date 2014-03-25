@@ -74,31 +74,8 @@ function myEnterFrameListener( _event )
     
     myAsteroidController:update()
     
-    
-    --[[
-    local bullets = myBulletController:getBullets()
-    
-    -- do bounding box test between bullets and ground
-    for i, bullet in ipairs( bullets ) do  
-        
-        for j, groundScreen in ipairs( myGroundController:getGroundScreens() ) do
-            
-            if hasCollidedBoundingBox( bullet.gfx, groundScreen.gfx ) then
-                print( "BOOM" )
-                
-                --bullet = nil
-                --table.remove( bullets, i)
-                
-                break
-            else
-                print( "NO BOOM" )
-            end
-        end
-    end
-    ]]--
-    
     -- test for ship ground collision
-    for j, groundScreen in ipairs( myGroundController:getGroundScreens() ) do
+    for i, groundScreen in ipairs( myGroundController:getGroundScreens() ) do
         
         if hasCollidedBoundingBox( groundScreen.gfx, myShip.gfx ) then
             print( "Ship collided with ground" )
@@ -106,6 +83,28 @@ function myEnterFrameListener( _event )
         
     end
     
+    -- test for ship asteroid collision
+    for i, asteroid in ipairs( myAsteroidController:getAsteroids() ) do
+        
+        if hasCollidedBoundingBox( asteroid.gfx, myShip.gfx ) then
+            print( "Ship collided with asteroid" )
+        end
+        
+    end
+    
+    -- test for bullet asteroid collision
+    for i, bullet in ipairs( myBulletController:getBullets() ) do  
+        
+        for j, asteroid in ipairs( myAsteroidController:getAsteroids() ) do
+            
+            if hasCollidedBoundingBox( bullet.gfx, asteroid.gfx ) then
+                print( "Bullet collided with asteroid" )
+                
+                asteroid:destroyed()
+                
+            end
+        end
+    end
     
 end
 
