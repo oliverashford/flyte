@@ -1,10 +1,10 @@
-local Ground = {}   
+local GroundController = {}   
 
 -------------------------------------------------
 -- CONSTRUCTOR
 -------------------------------------------------
 
-function Ground:new ( ... )
+function GroundController:new ( ... )
     
     local eventObject = display.newRect(0, 0, 0, 0)
 
@@ -36,15 +36,15 @@ end
 -- PUBLIC FUNCTIONS
 -------------------------------------------------
 
-function Ground:dispatchEvent( _event )
+function GroundController:dispatchEvent( _event )
     self.eventObject:dispatchEvent( _event )
 end
 
-function Ground:addEventListener( ... )
+function GroundController:addEventListener( ... )
     self.eventObject:addEventListener( ... )
 end
 
-function Ground:update()
+function GroundController:update()
     -- loop through each groundScreen 
     for i, ground in ipairs(self.groundScreens) do 
         -- move the ground
@@ -64,9 +64,13 @@ function Ground:update()
     end
 end
 
-function Ground:addNewGround()
+function GroundController:getGroundScreens()
+    return self.groundScreens
+end
+
+function GroundController:addNewGround()
     
-    print("addNewGround")
+    --print("addNewGround")
     
     -- create the GroundSCreen
     local GroundScreen = require( "GroundScreen" )
@@ -78,4 +82,4 @@ function Ground:addNewGround()
 
 end
 
-return Ground
+return GroundController

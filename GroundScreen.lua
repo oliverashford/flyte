@@ -60,10 +60,21 @@ function GroundScreen:buildGround( _startHeight )
     self:addXY( vertices, display.contentWidth, display.contentHeight)
     self:addXY( vertices, 0, display.contentHeight)
     
-    local newPoly = display.newPolygon( 0, 0, vertices)
-    newPoly.y = display.contentHeight - newPoly.height
+    local myPoly = display.newPolygon( 0, 0, vertices)
+    myPoly.y = display.contentHeight - myPoly.height
     
-    return newPoly
+    -- create boundin box
+    local myRect = display.newRect( myPoly.contentBounds.xMin, myPoly.contentBounds.yMin, myPoly.contentBounds.xMax, myPoly.contentBounds.yMax )
+    myRect.strokeWidth = 1
+    myRect:setFillColor( 0, 0, 0,0 )
+    myRect:setStrokeColor( 1, 0, 0, 1 )
+    
+    local myGroup = display.newGroup()
+    
+    myGroup:insert(myPoly)
+    myGroup:insert(myRect)
+    
+    return myGroup
 end
 
 function GroundScreen:addXY( _table, _x, _y )
