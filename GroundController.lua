@@ -70,9 +70,7 @@ function GroundController:getGroundScreens()
 end
 
 function GroundController:addNewGround()
-    
-    --print("addNewGround")
-    
+
     -- create the GroundSCreen
     local GroundScreen = require( "GroundScreen" )
     

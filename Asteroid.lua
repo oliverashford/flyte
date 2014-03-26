@@ -29,6 +29,7 @@ end
 -- PUBLIC FUNCTIONS
 -------------------------------------------------
 
+--[]
 function Asteroid:dispatchEvent( _event )
     self.eventObject:dispatchEvent( _event )
 end
@@ -42,9 +43,10 @@ function Asteroid:update()
 end
 
 function Asteroid:destroyed()
+    
     local event = {
-        name = "DESTROYED", 
-        target = self 
+        name = "destroyed",
+        target = self
     }
     self:dispatchEvent( event )
 end

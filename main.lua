@@ -87,7 +87,7 @@ function myEnterFrameListener( _event )
     for i, asteroid in ipairs( myAsteroidController:getAsteroids() ) do
         
         if hasCollidedBoundingBox( asteroid.gfx, myShip.gfx ) then
-            print( "Ship collided with asteroid" )
+            --print( "Ship collided with asteroid" )
         end
         
     end
@@ -98,7 +98,7 @@ function myEnterFrameListener( _event )
         for j, asteroid in ipairs( myAsteroidController:getAsteroids() ) do
             
             if hasCollidedBoundingBox( bullet.gfx, asteroid.gfx ) then
-                print( "Bullet collided with asteroid" )
+                --print( "Bullet collided with asteroid" )
                 
                 asteroid:destroyed()
                 
