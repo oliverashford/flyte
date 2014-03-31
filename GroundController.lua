@@ -56,7 +56,7 @@ function GroundController:update()
             
             ground = nil
             
-            table.remove( self.groundScreens, 1 )
+            table.remove( self.groundScreens, i )
             
             self:addNewGround()
             

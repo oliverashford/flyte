@@ -30,6 +30,10 @@ local myBulletController = BulletController:new()
 local AsteroidController = require( "AsteroidController" )
 local myAsteroidController = AsteroidController:new()
 
+-- add the starfields bg
+local StarfieldController = require( "StarfieldController" )
+local myStarfieldController = StarfieldController:new()
+
 -- add the ship
 local Ship = require( "Ship" )
 local myShip = Ship:new()
@@ -76,6 +80,8 @@ function myEnterFrameListener( _event )
     myBulletController:update()
     
     myAsteroidController:update()
+    
+    myStarfieldController:update()
     
     -- test for ship ground collision
     for i, groundScreen in ipairs( myGroundController:getGroundScreens() ) do
