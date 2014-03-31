@@ -39,7 +39,6 @@ function AsteroidController:addEventListener( ... )
 end
 
 function AsteroidController:update()
-    
     for i, asteroid in ipairs(self.asteroids) do 
         -- move the buyllet position
         asteroid:update()

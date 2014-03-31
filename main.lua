@@ -15,6 +15,9 @@ local stage = display.currentStage
 
 local speed = 10 
 
+local MIN_ASTEROID_WAIT = 1000
+local MAX_ASTEROID_WAIT = 5000
+
 -- add the moveing bg
 local GroundController = require( "GroundController" )
 local myGroundController = GroundController:new()
@@ -78,18 +81,16 @@ function myEnterFrameListener( _event )
     for i, groundScreen in ipairs( myGroundController:getGroundScreens() ) do
         
         if hasCollidedBoundingBox( groundScreen.gfx, myShip.gfx ) then
-            print( "Ship collided with ground" )
+            gameOver()
         end
         
     end
     
     -- test for ship asteroid collision
     for i, asteroid in ipairs( myAsteroidController:getAsteroids() ) do
-        
-        if hasCollidedBoundingBox( asteroid.gfx, myShip.gfx ) then
-            --print( "Ship collided with asteroid" )
+        if hasCollidedBoundingBox( asteroid.gfx, myShip.gfx ) then      
+            gameOver()
         end
-        
     end
     
     -- test for bullet asteroid collision
@@ -98,10 +99,7 @@ function myEnterFrameListener( _event )
         for j, asteroid in ipairs( myAsteroidController:getAsteroids() ) do
             
             if hasCollidedBoundingBox( bullet.gfx, asteroid.gfx ) then
-                --print( "Bullet collided with asteroid" )
-                
                 asteroid:destroyed()
-                
             end
         end
     end
@@ -114,15 +112,24 @@ local function myAsteroidListener( _event )
     local tempRadius = math.random( 20, 30 )
     
     myAsteroidController:spawn( display.contentWidth + tempRadius, 100, tempRadius)
+    
+    startAsteroidCountdown()
 end
 
-timer.performWithDelay( 5000, myAsteroidListener, 0 )
+
 
 fireButton:addEventListener( "touch", myFireButtonListener )
 
 stage:addEventListener( "touch", myStageTouchListener )
 
 Runtime:addEventListener( "enterFrame", myEnterFrameListener )
+
+function startAsteroidCountdown()
+    local countdown = math.random( MIN_ASTEROID_WAIT, MAX_ASTEROID_WAIT )
+    timer.performWithDelay( countdown, myAsteroidListener, 1 )
+end
+
+startAsteroidCountdown()
 
 function hasCollidedBoundingBox( obj1, obj2 )
    if ( obj1 == nil ) then  --make sure the first object exists
@@ -138,6 +145,12 @@ function hasCollidedBoundingBox( obj1, obj2 )
    local down = obj1.contentBounds.yMin >= obj2.contentBounds.yMin and obj1.contentBounds.yMin <= obj2.contentBounds.yMax
 
    return (left or right) and (up or down)
+end
+
+function gameOver()
+    Runtime:removeEventListener( "enterFrame", myEnterFrameListener )
+    
+    display.newText( "GAME OVER", display.contentCenterX, display.contentCenterY, display.contentWidth / 2, display.contentHeight / 2, "courier", 40)
 end
 
 --[[

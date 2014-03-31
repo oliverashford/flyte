@@ -46,11 +46,7 @@ function GroundScreen:buildGround( _startHeight )
     
     -- how many extra vertices?
     local extraVertices = math.random( MIN_VERTEX, MAX_VERTEX)
-    
-    --print( "_startHeight: " .. _startHeight)
-    --print( "extraVertices: " .. extraVertices)
-    --print( "---------------------")
-    
+   
     -- calculate the separation of each new vertex
     local xSeparation = display.contentWidth  / extraVertices
 
@@ -80,15 +76,17 @@ function GroundScreen:buildGround( _startHeight )
     myPoly.y = display.contentHeight - myPoly.height
     
     -- create boundin box for debugging
+    --[[
     local myRect = display.newRect( myPoly.contentBounds.xMin, myPoly.contentBounds.yMin, myPoly.contentBounds.xMax, myPoly.contentBounds.yMax )
     myRect.strokeWidth = 1
     myRect:setFillColor( 0, 0, 0,0 )
     myRect:setStrokeColor( 1, 0, 0, 1 )
+    ]]--
     
     local myGroup = display.newGroup()
     
     myGroup:insert(myPoly)
-    myGroup:insert(myRect)
+    --myGroup:insert(myRect)
     
     return myGroup
 end

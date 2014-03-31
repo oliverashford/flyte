@@ -46,16 +46,17 @@ function Ship:buildShip()
     local myPoly = display.newPolygon( 0, 0, { 0, 0, 30, 5, 0, 10 })
     
     -- create boundin box for debugging
+    --[[
     local myRect = display.newRect( myPoly.contentBounds.xMin, myPoly.contentBounds.yMin, myPoly.contentBounds.xMax, myPoly.contentBounds.yMax )
     myRect.strokeWidth = 1
     myRect:setFillColor( 0, 0, 0,0 )
     myRect:setStrokeColor( 0, 1, 0, 1 )
-    
+    ]]--
     
     local myGroup = display.newGroup()
     
     myGroup:insert(myPoly)
-    myGroup:insert(myRect)
+    --myGroup:insert(myRect)
     
     return myGroup
 end
