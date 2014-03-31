@@ -4,6 +4,7 @@ local MIN_RAD = 0
 local MAX_RAD = 15
 local MIN_VERTEX = 7
 local MAX_VERTEX = 21
+local MAX_ROTATION = 1
 
 -------------------------------------------------
 -- CONSTRUCTOR
@@ -20,7 +21,8 @@ function Asteroid:new ( _x, _y, _radius )
     object = {
         eventObject = eventObject,
         gfx = gfx,
-        speed = 5
+        speed = 5,
+        rotation = math.random( -MAX_ROTATION, MAX_ROTATION)
     }
 
     setmetatable( object, self )
@@ -47,6 +49,7 @@ end
 
 function Asteroid:update()
     self.gfx.x = self.gfx.x - self.speed
+    --self.gfx.rotation = self.gfx.rotation + self.rotation
 end
 
 function Asteroid:buildAsteroid( _radius )

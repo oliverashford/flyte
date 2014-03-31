@@ -1,6 +1,6 @@
 local Starfield = {}   
 
-local STAR_COUNT = 100
+local STAR_COUNT = 50
 
 -------------------------------------------------
 -- CONSTRUCTOR

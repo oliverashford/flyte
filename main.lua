@@ -1,9 +1,19 @@
 -- add the fps and memory readout
+--[[
 local fps = require("fps")
 local performance = fps.PerformanceOutput.new()
 performance.group.x = 50
 performance.group.y = 10
 performance.alpha = 0.6
+]]--
+
+-- load sounds
+local music = audio.loadStream( "sfx/music.wav" )
+local laser = audio.loadStream( "sfx/laser.mp3" )
+local explosion = audio.loadStream( "sfx/explosion.mp3" )
+
+-- Play the background music on channel 1, loop infinitely, and fade in over 3 seconds 
+local musicChannel = audio.play( music, { channel=1, loops=-1, fadein=3000 } )
 
 -- settings
 display.setStatusBar(display.HiddenStatusBar)
@@ -49,8 +59,13 @@ fireButton.alpha = 0.6
 -- add the fir button listener 
 local function myFireButtonListener( _event )
     if ( _event.phase == "began" ) then
-        myBulletController:fire( myShip.gfx.x, myShip.gfx.y, myShip:getAngle() )    
+        myBulletController:fire( myShip.gfx.x, myShip.gfx.y, myShip:getAngle() )  
+        
+        -- Play the laser on any available channel
+        local laserChannel = audio.play( laser )
     end
+    
+    return true 
 end
 
 -- add the touch listener
@@ -156,6 +171,9 @@ end
 function gameOver()
     Runtime:removeEventListener( "enterFrame", myEnterFrameListener )
     
+    -- Play the laser on any available channel
+    local explosionChannel = audio.play( explosion )
+    
     display.newText( "GAME OVER", display.contentCenterX, display.contentCenterY, display.contentWidth / 2, display.contentHeight / 2, "courier", 40)
 end
 
@@ -173,15 +191,17 @@ int pnpoly(int nvert, float *vertx, float *verty, float testx, float testy)
 }
 
 
-function pnpoly( _nvert, _vertx, _verty, _testx, _testy )
-  int i, j, c = 0
-  
-  for (i = 0, j = nvert-1; i < nvert; j = i++) {
-    if ( ((verty[i]>testy) != (verty[j]>testy)) && (testx < (vertx[j]-vertx[i]) * (testy-verty[i]) / (verty[j]-verty[i]) + vertx[i]) )
-       c = !c;
-  }
-  
-  return c
+function pnpoly( _nvert, _vertX, _vertY, _testX, _testY )
+    local i, j, collision = false
+
+    for i = 1, j = nvert-1; i < nvert; j = i++)
+      
+        if ( ((verty[i]>testy) != (verty[j]>testy)) && (testx < (vertx[j]-vertx[i]) * (testy-verty[i]) / (verty[j]-verty[i]) + vertx[i]) )
+            collision = !collision;
+        end
+    end
+
+    return collision
 end
 
 ]]--
